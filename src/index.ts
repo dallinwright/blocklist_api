@@ -1,6 +1,6 @@
 import {APIGatewayEvent, APIGatewayProxyResultV2, Handler} from 'aws-lambda';
 import {getESEndpoint} from "./secretManager";
-import {buildIndexName, initializeESClient, verifyIP} from "./elasticsearch";
+import {buildIndexName, initializeESClient, verifyIsSafeIP} from "./elasticsearch";
 
 export function createResponse(statusCode: number, body: any): APIGatewayProxyResultV2 {
     /**
@@ -53,7 +53,7 @@ export const handler: Handler = async (event: APIGatewayEvent) => {
         const esClient = await initializeESClient(esEndpoint);
         const esIndex = buildIndexName(today);
 
-        const isSafeIP = await verifyIP(esClient, esIndex, sourceIP);
+        const isSafeIP = await verifyIsSafeIP(esClient, esIndex, sourceIP);
 
         if (isSafeIP) {
             return createResponse(200, isSafeIP);

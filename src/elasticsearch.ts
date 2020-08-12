@@ -46,7 +46,7 @@ export function buildIndexName(date: Date): string {
     return process.env.ES_INDEX + '-' + prettyDate;
 }
 
-export async function verifyIP(client: any, index: string, ip: string): Promise<boolean> {
+export async function verifyIsSafeIP(client: any, index: string, ip: string): Promise<boolean> {
     console.log('SEARCHING INDEX: ' + index);
     const query = {
         query: {
@@ -65,7 +65,8 @@ export async function verifyIP(client: any, index: string, ip: string): Promise<
             body: query
         });
 
-        const hits = response['body']['hits'];
+        // ES Stores results embedded in large amounts of metadata at this location.
+        const hits = response['body']['hits']['hits'];
         console.log('ES hits');
         console.log(hits);
         return hits.length <= 0;
