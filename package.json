@@ -2,7 +2,13 @@
   "name": "blocklist-api",
   "version": "1.0.0",
   "main": "index.js",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm test"
+    }
+  },
   "dependencies": {
+    "@elastic/elasticsearch": "^7.8.0",
     "@types/aws-lambda": "^8.10.59",
     "aws-lambda": "^1.0.6",
     "aws-sdk": "^2.730.0",
@@ -15,7 +21,7 @@
     "serverless-tag-api-gateway": "^1.0.0"
   },
   "scripts": {
-    "run": "serverless invoke local --function index",
+    "run": "serverless invoke local --function index --path tests/testEvent.json",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' ./node_modules/.bin/nyc --reporter=lcov --reporter=text-summary mocha -r ts-node/register 'tests/**/*.ts'"
   },
