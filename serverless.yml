@@ -1,5 +1,5 @@
-service: blocklist-aggregator
-app: blocklist-aggregator
+service: blocklist-api
+app: blocklist-api
 org: dallinwright01
 
 plugins:

@@ -1,4 +1,6 @@
 import {APIGatewayEvent, APIGatewayProxyResultV2, Handler} from 'aws-lambda';
+import {getESEndpoint} from "./secretManager";
+import {buildIndexName, initializeESClient, verifyIP} from "./elasticsearch";
 
 export function createResponse(statusCode: number, body: any): APIGatewayProxyResultV2 {
     /**
@@ -20,6 +22,18 @@ export function createResponse(statusCode: number, body: any): APIGatewayProxyRe
     }
 }
 
+
+function determineIP(event: APIGatewayEvent): string {
+    if (event.queryStringParameters && event.queryStringParameters.ip) {
+        return event.queryStringParameters.ip
+    } else {
+        const ipRaw = event.headers["X-Forwarded-For"];
+        const ipArr = ipRaw.split(',');
+        // The leftmost, or position 0, item is the original client IP.
+        return ipArr[0];
+    }
+}
+
 export const handler: Handler = async (event: APIGatewayEvent) => {
     /**
      * AWS Lambda handler
@@ -27,10 +41,25 @@ export const handler: Handler = async (event: APIGatewayEvent) => {
      * @public
      * @return {any} A success or error api-gateway compatible response.
      */
-    console.log('Beginning aggregator execution');
 
     try {
-        return createResponse(200, event);
+        const sourceIP = determineIP(event);
+        console.log('Checking IP ' + sourceIP);
+
+        const esEndpoint = await getESEndpoint();
+        console.log('Connecting to ES');
+
+        const today = new Date();
+        const esClient = await initializeESClient(esEndpoint);
+        const esIndex = buildIndexName(today);
+
+        const isSafeIP = await verifyIP(esClient, esIndex, sourceIP);
+
+        if (isSafeIP) {
+            return createResponse(200, isSafeIP);
+        } else {
+            return createResponse(403, isSafeIP);
+        }
     } catch (e) {
         return createResponse(503, e.message);
     }
