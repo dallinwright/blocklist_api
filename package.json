@@ -2,6 +2,11 @@
   "name": "blocklist-api",
   "version": "1.0.0",
   "main": "index.js",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm test"
+    }
+  },
   "dependencies": {
     "@elastic/elasticsearch": "^7.8.0",
     "@types/aws-lambda": "^8.10.59",

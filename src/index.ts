@@ -2,7 +2,7 @@ import {APIGatewayEvent, APIGatewayProxyResultV2, Handler} from 'aws-lambda';
 import {getESEndpoint} from "./secretManager";
 import {buildIndexName, initializeESClient, verifyIsSafeIP} from "./elasticsearch";
 
-export function createResponse(statusCode: number, body: any): APIGatewayProxyResultV2 {
+export function createResponse(statusCode: number, status: boolean): APIGatewayProxyResultV2 {
     /**
      * Create API Gateway formatted response, useful even if not using api gateway
      * @function createResponse
@@ -18,10 +18,11 @@ export function createResponse(statusCode: number, body: any): APIGatewayProxyRe
             "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify({
+            safeIP: status
+        })
     }
 }
-
 
 function determineIP(event: APIGatewayEvent): string {
     if (event.queryStringParameters && event.queryStringParameters.ip) {
