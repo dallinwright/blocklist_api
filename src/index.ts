@@ -24,7 +24,7 @@ export function createResponse(statusCode: number, status: boolean): APIGatewayP
     }
 }
 
-function determineIP(event: APIGatewayEvent): string {
+export function determineIP(event: APIGatewayEvent): string {
     if (event.queryStringParameters && event.queryStringParameters.ip) {
         return event.queryStringParameters.ip
     } else {
