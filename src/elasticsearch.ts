@@ -1,6 +1,3 @@
-// import {ESEntry} from "./interfaces/ESEntry";
-// import {ESError} from "./interfaces/ESError";
-
 const AWS = require('aws-sdk');
 const {Client} = require('@elastic/elasticsearch');
 
@@ -31,7 +28,7 @@ export function initializeESClient(esEndpoint: string): any {
 export function buildIndexName(date: Date): string {
     /**
      * initialize the client connection to the provided es endpoint
-     * @function initializeESClient
+     * @function buildIndexName
      * @public
      * @param {Date} date to construct index name with
      * @return {any} index name with date in yyyy-mm-dd

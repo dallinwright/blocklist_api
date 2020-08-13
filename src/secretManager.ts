@@ -8,6 +8,12 @@ const client = new AWS.SecretsManager({
 });
 
 export async function getESEndpoint() {
+    /**
+     * Pull the ES endpoint from AWS Secret manager (usually env var, but in a public repo we don't want to expose it)
+     * @function getESEndpoint
+     * @public
+     * @return {string} https endpoint for ES cluster
+     */
     const secret = await client.getSecretValue({SecretId: secretName}).promise();
     const secretJSON = JSON.parse(secret.SecretString);
     return secretJSON[secretName];

@@ -5,7 +5,7 @@ import {APIGatewayEvent} from "aws-lambda";
 
 chai.use(require('chai-as-promised'))
 
-describe('Lambda Handler Tests', () => { // the tests container
+describe('Lambda Handler Tests', () => {
     describe('Create a true response', () => {
         it('Should be true',  () => {
             const testResponse =  {
@@ -25,8 +25,8 @@ describe('Lambda Handler Tests', () => { // the tests container
         })
     });
 
-    describe('Should be false', () => {
-        it('Should return an ip from an object', () => {
+    describe('Should return an ip from an event', () => {
+        it('Should be 1.1.1.1', () => {
             const obj: APIGatewayEvent = {
                 resource: '',
                 isBase64Encoded: false,
