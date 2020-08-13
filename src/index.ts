@@ -8,7 +8,7 @@ export function createResponse(statusCode: number, status: boolean): APIGatewayP
      * @function createResponse
      * @public
      * @param  {number} statusCode HTTP Status Code
-     * @param {body} JSON Event response body
+     * @param {boolean} status, if ip is safe.
      * @return {any} API Gateway formatted JSON response
      */
     return {
@@ -25,6 +25,13 @@ export function createResponse(statusCode: number, status: boolean): APIGatewayP
 }
 
 export function determineIP(event: APIGatewayEvent): string {
+    /**
+     * This is a temp function that is glue essentially. IpRaw is the idea, and query for testing purposes.
+     * @function determineIP
+     * @public
+     * @param  {APIGatewayEvent} API Gateway event
+     * @return {string} ip address parsed from input
+     */
     if (event.queryStringParameters && event.queryStringParameters.ip) {
         return event.queryStringParameters.ip
     } else {
@@ -42,7 +49,6 @@ export const handler: Handler = async (event: APIGatewayEvent) => {
      * @public
      * @return {any} A success or error api-gateway compatible response.
      */
-
     try {
         const sourceIP = determineIP(event);
         console.log('Checking IP ' + sourceIP);
