@@ -1,5 +1,9 @@
 # Blocklist API
 
+![Deploy](https://github.com/dallinwright/blocklist_api/workflows/Deploy/badge.svg)
+
+![Lint and Test](https://github.com/dallinwright/blocklist_api/workflows/Lint%20and%20Test/badge.svg)
+
 The API receives input via two selected options, either by using the HTTP X-Forwarded-For header to determine the original client IP or via an IP specified via a query string parameter.
 
 If an entry exists in ElasticSearch, it means we have it marked as an unsafe IP address and return not safe, otherwise it is marked as safe.
@@ -12,13 +16,17 @@ To use simply send a HTTP POST request to your url in the following format.
 
 `curl -x POST https://<my_endpoint>.eu-west-1.amazonaws.com/dev/validate`
 
-##### Sample Response 
+##### Sample Response via Postman
 
 ```json
 {
     "safeIP": true
 }
 ```
+
+##### Sample curl response
+![hit](./screenshots/curl.png)
+
 
 ##### Sample response for an ElasticSearch hit
 ![hit](./screenshots/es_result.png)
