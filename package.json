@@ -1,6 +1,6 @@
 {
   "name": "blocklist-api",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "main": "index.js",
   "husky": {
     "hooks": {
@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.8.0",
+    "@microsoft/tsdoc": "^0.12.20",
     "@types/aws-lambda": "^8.10.59",
     "aws-lambda": "^1.0.6",
     "aws-sdk": "^2.730.0",
@@ -44,6 +45,7 @@
     "mocha": "^8.1.1",
     "nyc": "^15.1.0",
     "ts-node": "^8.10.2",
+    "typedoc": "^0.18.0",
     "typescript": "^3.9.7"
   }
 }
