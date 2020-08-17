@@ -20,7 +20,7 @@ export function createResponse(statusCode: number, status: boolean, sourceIP: st
         },
         body: JSON.stringify({
             safeIP: status,
-            source: sourceIP
+            sourceIP: sourceIP
         })
     }
 }
