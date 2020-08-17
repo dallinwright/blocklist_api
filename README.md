@@ -20,7 +20,8 @@ To use simply send a HTTP POST request to your url in the following format.
 
 ```json
 {
-    "safeIP": true
+    "safeIP": false,
+    "sourceIP": "3.88.85.152"
 }
 ```
 
