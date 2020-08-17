@@ -2,7 +2,7 @@ import {APIGatewayEvent, APIGatewayProxyResultV2, Handler} from 'aws-lambda';
 import {getESEndpoint} from "./secretManager";
 import {buildIndexName, initializeESClient, verifyIsSafeIP} from "./elasticsearch";
 
-export function createResponse(statusCode: number, status: boolean): APIGatewayProxyResultV2 {
+export function createResponse(statusCode: number, status: boolean, sourceIP: string): APIGatewayProxyResultV2 {
     /**
      * Create API Gateway formatted response, useful even if not using api gateway
      * @function createResponse
@@ -19,7 +19,8 @@ export function createResponse(statusCode: number, status: boolean): APIGatewayP
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            safeIP: status
+            safeIP: status,
+            source: sourceIP
         })
     }
 }
@@ -63,11 +64,11 @@ export const handler: Handler = async (event: APIGatewayEvent) => {
         const isSafeIP = await verifyIsSafeIP(esClient, esIndex, sourceIP);
 
         if (isSafeIP) {
-            return createResponse(200, isSafeIP);
+            return createResponse(200, isSafeIP, sourceIP);
         } else {
-            return createResponse(403, isSafeIP);
+            return createResponse(403, isSafeIP, sourceIP);
         }
     } catch (e) {
-        return createResponse(503, e.message);
+        return createResponse(503, e.message, '');
     }
 };

@@ -16,11 +16,12 @@ describe('Lambda Handler Tests', () => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    safeIP: true
+                    safeIP: true,
+                    sourceIP: '1.1.1.1'
                 })
             }
 
-            const response = createResponse(200, true);
+            const response = createResponse(200, true, '1.1.1.1');
             expect(response).to.deep.equal(testResponse);
         })
     });
